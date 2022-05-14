@@ -1,62 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:stegaimg/screens/home.dart';
+import 'package:stegaimg/screens/encode_img.dart';
+import 'package:stegaimg/screens/decode_img.dart';
 
-void main() => runApp(const MaterialApp(
+void main() => runApp(MaterialApp(
   title: 'StegaImg',
-  home: Home()
+  initialRoute: '/',
+  routes: {
+    '/': (context) => Home(),
+    '/encodeimg': (context) => EncodeImg(),
+    '/decodeimg': (context) => DecodeImg(),
+  },
 ));
-
-
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('StegaImg'),
-          centerTitle: true,
-        ),
-        backgroundColor: Colors.black,
-        body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const Center(
-                      child: Text(
-                        'Welcome to StegaImg',
-                        style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2.0,
-                        color: Colors.white,
-                        fontFamily: 'Cursive'
-                      ),
-                    )
-                  ),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                              onPressed: (){},
-                              icon: const Icon(Icons.lock_rounded),
-                              iconSize: 50,
-                              color: Colors.white,
-                        ),
-                        IconButton(
-                            onPressed: (){},
-                            icon: const Icon(Icons.lock_open_rounded),
-                            iconSize: 50,
-                            color: Colors.white,
-                          )
-                    ])
-                )]
-            )
-        )
-    );
-  }
-}
-
-
