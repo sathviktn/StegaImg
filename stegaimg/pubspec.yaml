@@ -29,11 +29,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  image_picker: ^0.8.5+3
 
-  # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+
+  # Use with ImagePicker() for choosing image
+  image_picker: ^0.8.5+3
+
+  # For encryption and decryption
+  encrypt: ^5.0.1
+
+  # For image
+  image: ^3.2.0
+
+  # For permissions
+  permission_handler: ^9.2.0
+
+  # For Saving image
+  image_gallery_saver: ^1.7.1
 
 dev_dependencies:
   flutter_test:
@@ -46,9 +59,6 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -56,6 +66,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - "assets/loading.gif"
+    - "assets/error.gif"
 
   # To add assets to your application, add an assets section, like this:
   # assets:
