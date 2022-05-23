@@ -35,7 +35,7 @@ class Home extends StatelessWidget {
                           children: [
                             IconButton(
                               onPressed: (){
-                                Navigator.pushNamed(context, '/encodeimg');
+                                Navigator.pushNamed(context, '/encodeImg');
                               },
                               icon: const Icon(Icons.lock_rounded),
                               iconSize: 50,
@@ -43,7 +43,7 @@ class Home extends StatelessWidget {
                             ),
                             IconButton(
                               onPressed: (){
-                                Navigator.pushNamed(context, '/decodeimg');
+                                Navigator.pushNamed(context, '/decodeImg');
                               },
                               icon: const Icon(Icons.lock_open_rounded),
                               iconSize: 50,
