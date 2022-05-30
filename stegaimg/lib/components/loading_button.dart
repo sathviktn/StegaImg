@@ -20,7 +20,7 @@ class ButtonLogoWithLoadingAndError extends StatelessWidget {
           ),
         );
       case LoadingState.ERROR:
-        return const Icon(Icons.close);
+        return const Icon(Icons.close,);
       case LoadingState.PENDING:
         return Icon(pendingIcon);
       case LoadingState.SUCCESS:

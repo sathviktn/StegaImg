@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img_lib;
 import 'package:stegaimg/models/encode_model.dart';
-import 'package:stegaimg/services/encode_service.dart';
 import 'package:stegaimg/utilities/configs.dart';
+import 'package:stegaimg/components/password_field.dart';
+import 'package:stegaimg/components/encoder_components.dart';
 
 class EncodeImg extends StatefulWidget {
   const EncodeImg({Key? key}) : super(key: key);
@@ -32,37 +33,52 @@ class _EncodeImgState extends State<EncodeImg> {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) {
         editableImage = null;
-        return;
+        pickedImg = false;
       }
+      else {
         final tempImg = File(image.path);
+        UploadedImageConversionResponse res = await compute<UploadedImageConversionRequest, UploadedImageConversionResponse>
+          (convertUploadedImageToData, UploadedImageConversionRequest(tempImg));
+
         setState(() {
           encodingImg = tempImg;
-          editableImage = img_lib.decodeImage(encodingImg!.readAsBytesSync());
+          editableImage = res.editableImage; // img_lib.decodeImage(encodingImg!.readAsBytesSync());
+          imageByteSize = res.imageByteSize;
           pickedImg = true;
+          capacityUsageStats = 0.0;
+          capacityUsage = 'Usage: $capacityUsageStats%';
         });
       }
+    }
 
-    on PlatformException catch(e){
-      print('Failed to pick image: $e');
+    on Exception catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+          getSnackBar(Icons.error_outline_rounded, Colors.redAccent, "Failed to pick image: $e"));
       return;
     }
   }
 
   Future<void> sendToEncode() async {
-    EncodeRequest req = EncodeRequest(editableImage!, secretMsg!.text,
-        password: password!.text);
-    Navigator.pushNamed(context, '/encodeResult', arguments: req);
+      final secret = secretMsg?.text;
+      if (editableImage != null && secret != "") {
+        EncodeRequest req = EncodeRequest(editableImage!, secret!,
+            password: password!.text);
+        Navigator.pushNamed(context, '/encodeResult', arguments: req);
+      }
+      else{
+      ScaffoldMessenger.of(context).showSnackBar(
+          getSnackBar(Icons.error_outline_rounded, Colors.redAccent, "null inputs !"));
+    }
   }
 
   Future<void> onMessageChange(String msg) async {
-    if (!pickedImg ||
-        editableImage == null ||
-        imageByteSize == 0) {
+    if (!pickedImg || editableImage == null || imageByteSize == 0 || encodingImg == null) {
       setState(() {
         capacityUsage = 'Not applicable, no image uploaded';
-        capacityUsageStats = 1.0;
+        capacityUsageStats = 0.0;
       });
-    } else {
+    }
+    else {
       double usage = await calculateCapacityUsageAsync(
           CapacityUsageRequest(msg, imageByteSize));
       usage = min(usage, 0.99);
@@ -94,8 +110,15 @@ class _EncodeImgState extends State<EncodeImg> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('StegaImg'),
+        title: const Text('Encode'),
+        titleTextStyle: const TextStyle(
+            fontSize: 33,
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+            fontFamily: 'JosefinSans'
+        ),
         centerTitle: true,
+        backgroundColor: Colors.blueGrey,
       ),
       backgroundColor: Colors.black,
       body: Center(
@@ -104,191 +127,98 @@ class _EncodeImgState extends State<EncodeImg> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    // Image Picker
-                    Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            const Text(
-                              'Pick an Image',
-                              style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2.0,
-                              color: Colors.white,
-                              fontFamily: 'Cursive'
-                              ),
-                            ),
-                            encodingImg == null? IconButton(
-                              onPressed: () => getImage(),
-                              icon: const Icon(Icons.image_search),
-                              iconSize: 50,
-                              color: Colors.white,
-                            )
-                                : Image.file(
-                                encodingImg!,
-                                width: 300,
-                                height: 230,
-                                fit: BoxFit.fill
-                            )
-                          ]
-                        )
+                    // Image Picker - Start
+                    const Text('Pick an Image', style: StegaTextStyle(fSize: 27),),
+                    const SizedBox(height: 20,),
+                    !pickedImg? IconButton(     //encodingImg == null
+                      onPressed: () => getImage(),
+                      icon: const Icon(Icons.image_search),
+                      iconSize: 50,
+                      color: Colors.white,
+                    ) : Image.file(
+                        encodingImg!,
+                        width: 300,
+                        height: 230,
+                        fit: BoxFit.fill
                     ),
-                    const SizedBox(height: 30),
-                    // Secret Message
-                    Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            TextField(
-                              controller: secretMsg,
-                              onChanged: onMessageChange,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                hintText: 'Enter the Secret Message',
-                                hintStyle: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 2.0,
-                                    color: Colors.white,
-                                    fontFamily: 'Cursive'
-                                ),
-                              ),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 30,
-                                  letterSpacing: 2.0,
-                                  color: Colors.white
-                              ),
-                            )
-                          ]
-                        )
-                    ),
-                    const SizedBox(height: 30),
-                  // Password
+                    // Image Picker - End
+                    const SizedBox(height: 20,),
+                    // Usage Stats - Start
                     Row(
-                      children: <Widget>[
-                        Theme(data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
-                            child: Checkbox(
-                              key: const Key('encode_screen_token_checkbox'),
-                              value: encrypt,
-                              activeColor: Colors.white,
-                              onChanged: (bool? nextVal) {
-                                setState(() {
-                                  encrypt = nextVal;
-                                });
-                              },
-                            )
-                        ),
-                        const Text('Encrypt my message',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2.0,
-                            color: Colors.white,
-                            fontFamily: 'Cursive'
-                        ),
-                        ),
-                      ],
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(capacityUsage,
+                            style: const StegaTextStyle(fSize: 20)),
+                          CircularProgressIndicator(
+                            value: capacityUsageStats,
+                            color: Colors.red,
+                            backgroundColor: Colors.grey,
+                          )
+                        ]),
+                    // Usage Stats - End
+                    const SizedBox(height: 20,),
+                    // Secret Message - Start
+                    TextField(
+                      key: const Key('encode_screen_msg_input'),
+                      controller: secretMsg,
+                      onChanged: onMessageChange,
+                      obscureText: false,
+                      decoration: StegaInputDec(
+                          hint: 'Enter the Secret Message',
+                          hFontSize: 27
+                      ),
+                      textAlign: TextAlign.center,
+                      style: const StegaTextStyle(fSize: 27),
+                      minLines: 1,
+                      maxLines: 3,
                     ),
-                    TokenInputField(
+                    // Secret Message - End
+                    const SizedBox(height: 20),
+                    // Password - Start
+                    Theme(
+                        data: Theme.of(context).copyWith(
+                            unselectedWidgetColor: Colors.white
+                        ),
+                        child: CheckboxListTile(
+                          title: const Text("Encrypt my message",
+                              style: StegaTextStyle(
+                                  fSize: 23,
+                                  fStyle:FontStyle.italic
+                              )
+                          ),
+                          key: const Key('encode_screen_token_checkbox'),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: encrypt,
+                          activeColor: Colors.white,
+                          checkColor: Colors.black,
+                          onChanged: (bool? nextVal) {
+                            setState(() {
+                              encrypt = nextVal;
+                            });
+                          },
+                        )
+                    ),
+                    PasswordField(
                       encrypt,
                       password,
                       keyVal: 'encode_screen_token_input',
                     ),
-                    const SizedBox(height: 30),
-                    Center(
-                      child: ElevatedButton.icon(
-                        label: const Text('Next'),
-                        icon: const Icon(Icons.navigate_next),
-                        onPressed: sendToEncode,
-                      ),
-                    )
+                    // Password - End
+                    const SizedBox(height: 20),
+                    // Encode Button - Start
+                    IconButton(
+                      icon: const Icon(Icons.navigate_next),
+                      onPressed: sendToEncode,
+                      iconSize: 50,
+                      color: Colors.white,
+                    ),
+                    // Encode Button - End
                   ]
               )
           )
       )
     );
-  }
-}
-
-class TokenInputField extends StatefulWidget {
-  final TextEditingController? ctrl;
-  final bool? enable;
-  final String? keyVal;
-
-  const TokenInputField(this.enable, this.ctrl, {this.keyVal});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _TokenInputField();
-  }
-}
-
-class _TokenInputField extends State<TokenInputField> {
-  bool? visible;
-
-  @override
-  void initState() {
-    super.initState();
-    visible = false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (widget.enable!) {
-      return Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Theme(data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
-                  child: Checkbox(
-                  value: visible,
-                  activeColor: Colors.white,
-                  onChanged: (bool? nextVal) {
-                    setState(() {
-                      visible = nextVal;
-                    });
-                  })
-              ),
-              const Text('Show token',
-              style: TextStyle(fontSize: 30,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2.0,
-                color: Colors.white,
-                fontFamily: 'Cursive'
-                )
-              ),
-            ],
-          ),
-          TextField(
-            key: Key(widget.keyVal!),
-            controller: widget.ctrl,
-            obscureText: !visible!,
-            decoration: const InputDecoration(
-              hintText: 'Enter a Strong Password',
-              hintStyle: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2.0,
-                fontFamily: 'Cursive',
-                color: Colors.white
-              )
-            ),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 30,
-              letterSpacing: 2.0,
-              color: Colors.white
-            ),
-          ),
-        ],
-      );
-    } else {
-      return Container();
-    }
   }
 }
 

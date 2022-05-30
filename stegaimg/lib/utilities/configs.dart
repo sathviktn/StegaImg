@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 /// Configs
 const int byteSize = 8;
@@ -12,48 +12,16 @@ Uint16List msg2Bytes(String msg) {
   return Uint16List.fromList(msg.codeUnits);
 }
 
-/// GetMsgSize
-int getMsgSize(String msg){
-  Uint16List byteMsg = msg2Bytes(msg);
-  return byteMsg.length * dataLength;
-}
-
-/// ExpandMsg
-Uint16List expandMsg(Uint16List msg) {
-  Uint16List expanded = Uint16List(msg.length * dataLength);
-  for (int i = 0; i < msg.length; ++i) {
-    int msgByte = msg[i];
-    for (int j = 0; j < dataLength; ++j) {
-      int lastBit = msgByte & 1;
-      expanded[i * dataLength + (dataLength - j - 1)] = lastBit;
-      msgByte = msgByte >> 1;
-    }
-  }
-  return expanded;
-}
-
-/// PadMsg
-Uint16List padMsg(int capacity, Uint16List msg) {
-  Uint16List padded = Uint16List(capacity);
-  for (int i = 0; i < msg.length; ++i) {
-    padded[i] = msg[i];
-  }
-  return padded;
+/// Bytes2Msg
+String bytes2msg(Uint16List bytes) {
+//  List<int> list = bytes.toString().codeUnits;
+  //bytes = Uint16List.fromList(list);
+  return String.fromCharCodes(bytes);
 }
 
 /// GetEncoderCapacity
 int getEncoderCapacity(Uint16List img) {
   return img.length;
-}
-
-/// EncodeOnePixel
-int encodeOnePixel(int pixel, int msg) {
-  if (msg != 1 && msg != 0) {
-    throw FlutterError('msg_encode_bit_more_than_1_bit');
-  }
-  int lastBitMask = 254;
-  int encoded = (pixel & lastBitMask) | msg;
-  return encoded;
 }
 
 /// Result State
@@ -96,6 +64,79 @@ double calculateCapacityUsage(CapacityUsageRequest req) {
 Future<double> calculateCapacityUsageAsync(CapacityUsageRequest req) async {
   double usage = await compute(calculateCapacityUsage, req);
   return usage;
+}
+
+
+SnackBar getSnackBar(IconData icon, Color clr, String snackText) => SnackBar(
+    backgroundColor: clr,
+    content: Row(
+      children: [
+        Icon(icon, size: 50,),
+        const SizedBox(width: 20,),
+        Expanded(child: Text(snackText,
+            style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                fontFamily: 'JosefinSans',
+                fontSize: 25,
+            )
+        )
+        )]
+    )
+);
+
+/// PadCryptionKey
+///
+/// Summary: To pad the input password to 32 digit length key.
+String padCryptionKey(String key) {
+  if (key.length > 32) {
+    throw FlutterError('cryption_key_length_greater_than_32');
+  }
+
+  String paddedKey = key;
+  int padCnt = 32 - key.length;
+
+  for (int i = 0; i < padCnt; ++i) {
+    paddedKey += '.';
+  }
+  return paddedKey;
+}
+
+class StegaTextStyle extends TextStyle {
+  final String fFamily;
+  final double fSize;
+  final Color fColor;
+  final FontWeight fWeight;
+  final FontStyle fStyle;
+
+  const StegaTextStyle({
+    this.fFamily = 'JosefinSans',
+    this.fSize = 20,
+    this.fColor = Colors.white,
+    this.fWeight = FontWeight.w500,
+    this.fStyle = FontStyle.normal
+  }) : super(
+    color: fColor,
+    fontWeight: fWeight,
+    fontSize: fSize,
+    fontStyle: fStyle,
+    fontFamily: fFamily,
+  );
+}
+
+class StegaInputDec extends InputDecoration{
+  final String hint;
+  final double hFontSize;
+
+  StegaInputDec({
+    // default values
+    this.hint = "hint",
+    this.hFontSize = 20
+  }) : super(
+    hintText: hint,
+    hintStyle: StegaTextStyle(fSize: hFontSize),
+  );
 }
 
 

@@ -2,9 +2,9 @@ import 'package:encrypt/encrypt.dart' as crypto;
 import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img_lib;
-import 'package:stegaimg/utilities/pad_cryption_key.dart';
 import 'package:stegaimg/utilities/configs.dart';
 import 'package:stegaimg/models/encode_model.dart';
+import 'package:stegaimg/components/encoder_components.dart';
 
 
 

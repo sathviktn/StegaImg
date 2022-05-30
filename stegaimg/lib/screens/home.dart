@@ -7,6 +7,13 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          titleTextStyle: const TextStyle(
+              fontSize: 33,
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontFamily: 'JosefinSans'
+          ),
+          backgroundColor: Colors.blueGrey,
           title: const Text('StegaImg'),
           centerTitle: true,
         ),
@@ -20,11 +27,10 @@ class Home extends StatelessWidget {
                       child: Text(
                         'Welcome to StegaImg',
                         style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2.0,
+                            fontSize: 33,
                             color: Colors.white,
-                            fontFamily: 'Cursive'
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'JosefinSans'
                         ),
                       )
                   ),

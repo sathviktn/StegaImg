@@ -1,13 +1,11 @@
 name: stegaimg
-description: A new Flutter project for image steganography.
+description: A Flutter project for image steganography.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
+# A version number is three numbers separated by dots, like 1.2.43 followed by an optional build number separated by a +.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
@@ -47,6 +45,14 @@ dependencies:
 
   # For Saving image
   image_gallery_saver: ^1.7.1
+  path_provider: ^2.0.10
+  flutter_launcher_icons: ^0.9.2
+
+flutter_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icons/StegaImg.png"
 
 dev_dependencies:
   flutter_test:
@@ -67,9 +73,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  fonts:
+    - family: JosefinSans
+      fonts:
+        - asset: "assets/fonts/Josefin_Sans/JosefinSans-Regular.ttf"
+
   assets:
-    - "assets/loading.gif"
-    - "assets/error.gif"
+    - "assets/gifs/loading.gif"
+    - "assets/gifs/error.gif"
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'package:image/image.dart' as img_lib;
 import 'package:flutter/widgets.dart';
 import 'dart:typed_data';
 import 'package:stegaimg/utilities/configs.dart';
 
 /// Encode Response
+///
+/// {@category Models}
 class EncodeResponse {
   img_lib.Image editableImage;   // not needed
   Image displayImage;  // for displaying output image
@@ -13,6 +16,8 @@ class EncodeResponse {
 }
 
 /// Encode Request
+///
+/// {@category Models}
 class EncodeRequest {
   img_lib.Image originalImg;
   String secretMsg;
@@ -26,10 +31,33 @@ class EncodeRequest {
 }
 
 /// Encode Result Screen Render Request
+///
+/// {@category Models}
 class EncodeResultScreenRenderRequest{
   Image encodedImage;
   Uint8List encodedByteImage;
   ResultState state;
 
   EncodeResultScreenRenderRequest(this.state, this.encodedByteImage, this.encodedImage);
+}
+
+/// Uploaded Image Conversion Request
+///
+/// {@category Services: Requests}
+class UploadedImageConversionRequest {
+  File? file;
+
+  UploadedImageConversionRequest(this.file);
+}
+
+/// Upload Image Conversion Response
+///
+/// {@category Models}
+class UploadedImageConversionResponse {
+  img_lib.Image editableImage;
+  Image displayableImage;
+  int imageByteSize;
+
+  UploadedImageConversionResponse(
+      this.editableImage, this.displayableImage, this.imageByteSize);
 }

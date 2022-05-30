@@ -1,4 +1,4 @@
-package com.stega.stegaimg.stegaimg
+package com.sathviktn.stegaimg
 
 import io.flutter.embedding.android.FlutterActivity
 
