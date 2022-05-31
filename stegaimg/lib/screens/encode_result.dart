@@ -9,6 +9,11 @@ import 'package:stegaimg/utilities/configs.dart';
 import 'package:stegaimg/services/encode_service.dart';
 import 'package:stegaimg/components/loading_button.dart';
 
+/// Encode result
+///
+/// Result Screen for Encode operation.
+///
+/// @category Screens
 class EncodeResult extends StatefulWidget {
   const EncodeResult({Key? key}) : super(key: key);
 
@@ -125,7 +130,7 @@ class _ResultState extends State<EncodeResult> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Result"),
-          titleTextStyle: const StegaTextStyle(fSize: 33, fWeight: FontWeight.w500),
+          titleTextStyle: const StegaImgTextStyle(fSize: 33, fWeight: FontWeight.w500),
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
           leading: IconButton(
@@ -158,7 +163,7 @@ class _ResultState extends State<EncodeResult> {
                                   onPressed: () {
                                     saveImage(snapshot.data!.encodedByteImage, snapshot.data!.imgName);
                                   },
-                                  icon: ButtonLogoWithLoadingAndError(
+                                  icon: StegaCustomIcon(
                                           savingState, Icons.save ),
                                   iconSize: 50,
                                   color: Colors.white,
@@ -179,11 +184,11 @@ class _ResultState extends State<EncodeResult> {
                               color: Colors.redAccent, size: 150,),
                             const SizedBox(height: 10.0,),
                             const Text('Oops >_<',
-                                style: StegaTextStyle(fSize: 35, fColor: Colors.redAccent)),
+                                style: StegaImgTextStyle(fSize: 35, fColor: Colors.redAccent)),
                             const SizedBox(height: 10.0,),
                             // To get complete error, print this => ${snapshot.error}
                             const Text('Something went wrong! Please retry with valid inputs.',
-                              style: StegaTextStyle(fSize: 30),),
+                              style: StegaImgTextStyle(fSize: 30),),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(20.0),
                               child: Image.asset('assets/gifs/error.gif'),
@@ -206,7 +211,7 @@ class _ResultState extends State<EncodeResult> {
                               ),
                               const Text(
                                   'Please wait while StegaImg is decoding your message...',
-                                  style: StegaTextStyle(fSize: 25, fWeight: FontWeight.w500)
+                                  style: StegaImgTextStyle(fSize: 25, fWeight: FontWeight.w500)
                               )
                             ],
                           )

@@ -11,6 +11,11 @@ import 'package:stegaimg/utilities/configs.dart';
 import 'package:stegaimg/components/password_field.dart';
 import 'package:stegaimg/components/encoder_components.dart';
 
+/// Encode Img
+///
+/// Screen for Encode operation.
+///
+/// @category Screens
 class EncodeImg extends StatefulWidget {
   const EncodeImg({Key? key}) : super(key: key);
 
@@ -44,8 +49,8 @@ class _EncodeImgState extends State<EncodeImg> {
       }
       else {
         final tempImg = File(image.path);
-        UploadedImageConversionResponse res = await compute<UploadedImageConversionRequest, UploadedImageConversionResponse>
-          (convertUploadedImageToData, UploadedImageConversionRequest(tempImg));
+        ImageConversionResponse res = await compute<ImageConversionRequest, ImageConversionResponse>
+          (convertImageToData, ImageConversionRequest(tempImg));
 
         setState(() {
           encodingImg = tempImg;
@@ -89,7 +94,7 @@ class _EncodeImgState extends State<EncodeImg> {
       });
     }
     else {
-      double usage = await calculateCapacityUsageAsync(
+      double usage = await compute(calculateCapacityUsage,
           CapacityUsageRequest(msg, imageByteSize));
       usage = min(usage, 0.99);
       String strUsage = (usage * 100.0).toString();
@@ -123,7 +128,7 @@ class _EncodeImgState extends State<EncodeImg> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Encode'),
-        titleTextStyle: const StegaTextStyle(fSize: 33, fWeight: FontWeight.w500),
+        titleTextStyle: const StegaImgTextStyle(fSize: 33, fWeight: FontWeight.w500),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
         leading: IconButton(
@@ -142,9 +147,9 @@ class _EncodeImgState extends State<EncodeImg> {
                   children: <Widget>[
                     const SizedBox(height: 15,),
                     // Image Picker - Start
-                    const Text('Pick an Image', style: StegaTextStyle(fSize: 30),),
+                    const Text('Pick an Image', style: StegaImgTextStyle(fSize: 30),),
                     IconButton(
-                      icon: ButtonLogoWithLoadingAndError(getState, Icons.image_search),
+                      icon: StegaCustomIcon(getState, Icons.image_search),
                       iconSize: 50,
                       color: Colors.white,
                       onPressed: () => getImage(),),
@@ -159,7 +164,7 @@ class _EncodeImgState extends State<EncodeImg> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(capacityUsage,
-                            style: const StegaTextStyle(fSize: 18)),
+                            style: const StegaImgTextStyle(fSize: 18)),
                           CircularProgressIndicator(
                             value: capacityUsageStats,
                             color: Colors.red,
@@ -174,9 +179,9 @@ class _EncodeImgState extends State<EncodeImg> {
                       controller: secretMsg,
                       onChanged: onMessageChange,
                       obscureText: false,
-                      decoration: StegaInputDec(hint: 'Enter the secret message', hFontSize: 30),
+                      decoration: StegaImgInputDec(hint: 'Enter the secret message', hFontSize: 30),
                       textAlign: TextAlign.center,
-                      style: const StegaTextStyle(fSize: 30),
+                      style: const StegaImgTextStyle(fSize: 30),
                       minLines: 1,
                       maxLines: 3,
                     ),
@@ -187,7 +192,7 @@ class _EncodeImgState extends State<EncodeImg> {
                         data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
                         child: CheckboxListTile(
                           title: const Text("Encrypt my message",
-                              style: StegaTextStyle(
+                              style: StegaImgTextStyle(
                                   fSize: 25,
                                   fStyle:FontStyle.italic
                               )
@@ -204,7 +209,7 @@ class _EncodeImgState extends State<EncodeImg> {
                           },
                         )
                     ),
-                    PasswordField(
+                    StegaImgPasswordField(
                       encrypt,
                       password,
                       keyVal: 'encode_screen_token_input',
