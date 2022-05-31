@@ -1,32 +1,16 @@
-import 'dart:typed_data';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// Configs
 const int byteSize = 8;
 const int byteCount = 2;
+
+/// Configs
+///
+/// @category Utilities: Configs
 const int dataLength = byteSize * byteCount;
-
-/// Msg2Bytes
-Uint16List msg2Bytes(String msg) {
-  return Uint16List.fromList(msg.codeUnits);
-}
-
-/// Bytes2Msg
-String bytes2msg(Uint16List bytes) {
-//  List<int> list = bytes.toString().codeUnits;
-  //bytes = Uint16List.fromList(list);
-  return String.fromCharCodes(bytes);
-}
-
-/// GetEncoderCapacity
-int getEncoderCapacity(Uint16List img) {
-  return img.length;
-}
 
 /// Result State
 ///
-/// {@category Services: States}
+/// @category Utilities: States
 enum ResultState {
   success,
   error
@@ -34,7 +18,7 @@ enum ResultState {
 
 /// Loading State
 ///
-/// {@category Services: States}
+/// @category Utilities: States
 enum LoadingState {
   loading,
   error,
@@ -42,53 +26,32 @@ enum LoadingState {
   success,
 }
 
-
-/// Capacity Usage Request
+/// Get SnackBar
 ///
-/// {@category Services: Requests}
-class CapacityUsageRequest {
-  int? imgBytes;
-  String msg;
-
-  CapacityUsageRequest(this.msg, this.imgBytes);
-}
-
-
-double calculateCapacityUsage(CapacityUsageRequest req) {
-  String msg = req.msg;
-  double encoderCapacity = req.imgBytes!.toDouble();
-  double msgSize = msg.length.toDouble();
-  return msgSize / encoderCapacity;
-}
-
-Future<double> calculateCapacityUsageAsync(CapacityUsageRequest req) async {
-  double usage = await compute(calculateCapacityUsage, req);
-  return usage;
-}
-
-
-SnackBar getSnackBar(IconData icon, Color clr, String snackText) => SnackBar(
-    backgroundColor: clr,
-    content: Row(
-      children: [
-        Icon(icon, size: 50,),
-        const SizedBox(width: 20,),
-        Expanded(child: Text(snackText,
-            style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                fontFamily: 'JosefinSans',
-                fontSize: 25,
+/// @category Utilities: SnackBar
+SnackBar getSnackBar(IconData icon, Color clr, String snackText) =>
+    SnackBar(
+        backgroundColor: clr,
+        content: Row(
+          children: [
+            Icon(icon, size: 50,),
+            const SizedBox(width: 20,),
+            Expanded(child: Text(snackText,
+                style: const StegaImgTextStyle(
+                    fColor: Colors.black, fWeight: FontWeight.bold,
+                  fSize: 25, fStyle: FontStyle.italic
+                )
             )
-        )
-        )]
+            )
+          ]
     )
 );
 
-/// PadCryptionKey
+/// Pad Cryption Key
 ///
-/// Summary: To pad the input password to 32 digit length key.
+/// To pad the input password to 32 digit length key.
+///
+/// @category Utilities
 String padCryptionKey(String key) {
   if (key.length > 32) {
     throw FlutterError('cryption_key_length_greater_than_32');
@@ -104,7 +67,9 @@ String padCryptionKey(String key) {
 }
 
 /// Custom TextStyle for StegaImg
-class StegaTextStyle extends TextStyle {
+///
+/// @category Utilities: TextStyle
+class StegaImgTextStyle extends TextStyle {
   final String fFamily;
   final double fSize;
   final Color fColor;
@@ -112,7 +77,7 @@ class StegaTextStyle extends TextStyle {
   final FontStyle fStyle;
   final double lSpacing;
 
-  const StegaTextStyle({
+  const StegaImgTextStyle({
     this.fFamily = 'JosefinSans',
     this.fSize = 20,
     this.fColor = Colors.white,
@@ -131,18 +96,19 @@ class StegaTextStyle extends TextStyle {
 }
 
 /// Custom InputDecoration for StegaImg
-class StegaInputDec extends InputDecoration{
+///
+/// @category Utilities: InputDecoration
+class StegaImgInputDec extends InputDecoration{
   final String hint;
   final double hFontSize;
 
-  StegaInputDec({
+  StegaImgInputDec({
     // default values
     this.hint = "hint",
     this.hFontSize = 20
   }) : super(
     hintText: hint,
-    hintStyle: StegaTextStyle(fSize: hFontSize),
+    hintStyle: StegaImgTextStyle(fSize: hFontSize),
   );
 }
-
 

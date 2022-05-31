@@ -2,7 +2,7 @@ import 'package:image/image.dart' as img_lib;
 
 /// Decode Request
 ///
-/// {@category Models}
+/// @category Models: Decode
 class DecodeRequest {
   img_lib.Image? original;
   String? password;
@@ -16,7 +16,7 @@ class DecodeRequest {
 
 /// Decode Response
 ///
-/// {@category Models}
+/// @category Models: Decode
 class DecodeResponse {
   String decodedMsg;
 

@@ -4,14 +4,31 @@ import 'package:image/image.dart' as img_lib;
 import 'package:stegaimg/utilities/configs.dart';
 import 'package:stegaimg/models/encode_model.dart';
 
-
-/// GetMsgSize
+/// Get Msg Size
+///
+/// @category Components: Encode
 int getMsgSize(String msg){
-  Uint16List byteMsg = msg2Bytes(msg);
+  Uint16List byteMsg = msgToBytes(msg);
   return byteMsg.length * dataLength;
 }
 
-/// EncodeOnePixel
+/// GetEncoderCapacity
+///
+/// @category Utilities
+int getEncoderCapacity(Uint16List img) {
+  return img.length;
+}
+
+/// Msg2Bytes
+///
+/// @category Utilities
+Uint16List msgToBytes(String msg) {
+  return Uint16List.fromList(msg.codeUnits);
+}
+
+/// Encode One Pixel
+///
+/// @category Components: Encode
 int encodeOnePixel(int pixel, int msg) {
   if (msg != 1 && msg != 0) {
     throw FlutterError('msg_encode_bit_more_than_1_bit');
@@ -21,7 +38,9 @@ int encodeOnePixel(int pixel, int msg) {
   return encoded;
 }
 
-/// PadMsg
+/// Pad Msg
+///
+/// @category Components: Encode
 Uint16List padMsg(int capacity, Uint16List msg) {
   Uint16List padded = Uint16List(capacity);
   for (int i = 0; i < msg.length; ++i) {
@@ -30,7 +49,9 @@ Uint16List padMsg(int capacity, Uint16List msg) {
   return padded;
 }
 
-/// ExpandMsg
+/// Expand Msg
+///
+/// @category Components: Encode
 Uint16List expandMsg(Uint16List msg) {
   Uint16List expanded = Uint16List(msg.length * dataLength);
 
@@ -46,13 +67,25 @@ Uint16List expandMsg(Uint16List msg) {
   return expanded;
 }
 
-/// ConvertUploadedImageToData
-UploadedImageConversionResponse convertUploadedImageToData(UploadedImageConversionRequest req) {
+/// Convert Image To Data
+///
+/// @category Components: Encode
+ImageConversionResponse convertImageToData(ImageConversionRequest req) {
   img_lib.Image? editableImage = img_lib.decodeImage(req.file!.readAsBytesSync());
   Image displayableImage = Image.file(req.file!, fit: BoxFit.fitWidth);
   int imageByteSize = getEncoderCapacity(Uint16List.fromList(editableImage!.getBytes().toList()));
 
-  UploadedImageConversionResponse response = UploadedImageConversionResponse(
+  ImageConversionResponse response = ImageConversionResponse(
       editableImage, displayableImage, imageByteSize);
   return response;
+}
+
+/// Calculate Capacity Usage
+///
+/// @category Utilities
+double calculateCapacityUsage(CapacityUsageRequest req) {
+  String msg = req.msg;
+  double encoderCapacity = req.imgBytes!.toDouble();
+  double msgSize = msg.length.toDouble();
+  return msgSize / encoderCapacity;
 }

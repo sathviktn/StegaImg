@@ -4,14 +4,19 @@ import 'package:stegaimg/models/decode_model.dart';
 import 'package:stegaimg/components/decoder_components.dart';
 import 'package:stegaimg/utilities/configs.dart';
 
+/// Decode Message From Image
+///
+/// To decode message from the input image.
+///
+/// @category Services
 DecodeResponse decodeMessageFromImage(DecodeRequest? req){
   // Get inputs
   Uint16List img = Uint16List.fromList(req!.original!.getBytes().toList());
   Uint16List extracted = extractBitsFromImg(img); //img
   Uint16List padded = padToBytes(extracted);
-  Uint16List byteMsg = bits2bytes(padded);
+  Uint16List byteMsg = bitsToBytes(padded);
   Uint16List sanitized = sanitizePaddingZeros(byteMsg);
-  String msg = bytes2msg(sanitized);
+  String msg = bytesToMsg(sanitized);
   String? password = req.password;
 
   if (req.shouldDecrypt()) {

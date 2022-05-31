@@ -5,10 +5,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img_lib;
 import 'package:stegaimg/models/decode_model.dart';
 import 'package:stegaimg/utilities/configs.dart';
-
 import '../components/loading_button.dart';
 import '../components/password_field.dart';
 
+/// Decode Img
+///
+/// Screen for Decode operation.
+///
+/// @category Screens
 class DecodeImg extends StatefulWidget {
   const DecodeImg({Key? key}) : super(key: key);
 
@@ -77,7 +81,7 @@ class _DecodeImgState extends State<DecodeImg> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Decode'),
-        titleTextStyle: const StegaTextStyle(fSize: 33, fWeight: FontWeight.w500),
+        titleTextStyle: const StegaImgTextStyle(fSize: 33, fWeight: FontWeight.w500),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
         leading: IconButton(
@@ -96,9 +100,9 @@ class _DecodeImgState extends State<DecodeImg> {
             children: [
               const SizedBox(height: 25,),
               // Image Picker - Start
-              const Text('Pick an Image', style: StegaTextStyle(fSize: 30),),
+              const Text('Pick an Image', style: StegaImgTextStyle(fSize: 30),),
               IconButton(
-                icon: ButtonLogoWithLoadingAndError(getState, Icons.image_search),
+                icon: StegaCustomIcon(getState, Icons.image_search),
                 iconSize: 50,
                 color: Colors.white,
                 onPressed: () => getImage(),),
@@ -111,7 +115,7 @@ class _DecodeImgState extends State<DecodeImg> {
               Theme(data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
                   child: CheckboxListTile(
                     title: const Text("Decrypt my message",
-                        style: StegaTextStyle(fSize: 25, fStyle: FontStyle.italic)),
+                        style: StegaImgTextStyle(fSize: 25, fStyle: FontStyle.italic)),
                     controlAffinity: ListTileControlAffinity.leading,
                     key: const Key('decode_screen_token_checkbox'),
                     value: decrypt,
@@ -123,7 +127,7 @@ class _DecodeImgState extends State<DecodeImg> {
                       });},
                   )
               ),
-              PasswordField(
+              StegaImgPasswordField(
                 decrypt,
                 password,
                 keyVal: 'encode_screen_token_input',

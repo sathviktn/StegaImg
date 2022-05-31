@@ -6,11 +6,11 @@ import 'package:stegaimg/utilities/configs.dart';
 import 'package:stegaimg/models/encode_model.dart';
 import 'package:stegaimg/components/encoder_components.dart';
 
-
-
 /// Encode Message Into Image
 ///
-/// Summary: To encode input message into the input image.
+/// To encode input message into the input image.
+///
+/// @category Services
 EncodeResponse encodeMessageIntoImage(EncodeRequest? req)  {
   // Get inputs
   Uint16List img = Uint16List.fromList(req!.originalImg.getBytes().toList());
@@ -33,7 +33,7 @@ EncodeResponse encodeMessageIntoImage(EncodeRequest? req)  {
     throw FlutterError('image_capacity_not_enough');
   }
 
-  Uint16List expandedMsg = expandMsg(msg2Bytes(msg));
+  Uint16List expandedMsg = expandMsg(msgToBytes(msg));
   Uint16List paddedMsg = padMsg(getEncoderCapacity(img), expandedMsg);
 
   // check if padded msg size and original msg size matches

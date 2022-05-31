@@ -6,7 +6,7 @@ import 'package:stegaimg/utilities/configs.dart';
 
 /// Encode Response
 ///
-/// {@category Models}
+/// @category Models: Encode
 class EncodeResponse {
   img_lib.Image editableImage;   // not needed
   Image displayImage;  // for displaying output image
@@ -18,7 +18,7 @@ class EncodeResponse {
 
 /// Encode Request
 ///
-/// {@category Models}
+/// @category Models: Encode
 class EncodeRequest {
   String imgName;
   img_lib.Image originalImg;
@@ -34,7 +34,7 @@ class EncodeRequest {
 
 /// Encode Result Screen Render Request
 ///
-/// {@category Models}
+/// @category Models: Encode
 class EncodeResultScreenRenderRequest{
   Image encodedImage;
   Uint8List encodedByteImage;
@@ -44,23 +44,33 @@ class EncodeResultScreenRenderRequest{
   EncodeResultScreenRenderRequest(this.state, this.encodedByteImage, this.encodedImage, this.imgName);
 }
 
-/// Uploaded Image Conversion Request
+/// Image Conversion Request
 ///
-/// {@category Services: Requests}
-class UploadedImageConversionRequest {
+/// @category Models: Encode
+class ImageConversionRequest {
   File? file;
 
-  UploadedImageConversionRequest(this.file);
+  ImageConversionRequest(this.file);
 }
 
-/// Upload Image Conversion Response
+/// Image Conversion Response
 ///
-/// {@category Models}
-class UploadedImageConversionResponse {
+/// @category Models: Encode
+class ImageConversionResponse {
   img_lib.Image editableImage;
   Image displayableImage;
   int imageByteSize;
 
-  UploadedImageConversionResponse(
+  ImageConversionResponse(
       this.editableImage, this.displayableImage, this.imageByteSize);
+}
+
+/// Capacity Usage Request
+///
+/// @category Utilities
+class CapacityUsageRequest {
+  int? imgBytes;
+  String msg;
+
+  CapacityUsageRequest(this.msg, this.imgBytes);
 }

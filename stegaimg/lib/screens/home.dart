@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stegaimg/utilities/configs.dart';
 
+/// Home
+///
+/// Welcome Screen of the StegaImg App.
+///
+/// @category Screens
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -9,7 +14,7 @@ class Home extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('StegaImg'),
-          titleTextStyle: const StegaTextStyle(fSize: 33, fWeight: FontWeight.w500),
+          titleTextStyle: const StegaImgTextStyle(fSize: 33, fWeight: FontWeight.w500),
           backgroundColor: Colors.blueGrey,
           centerTitle: true,
         ),
@@ -21,7 +26,7 @@ class Home extends StatelessWidget {
                 children: <Widget>[
                   const Text(
                     'Welcome to StegaImg',
-                    style: StegaTextStyle(fSize: 35, fWeight: FontWeight.w500),
+                    style: StegaImgTextStyle(fSize: 35, fWeight: FontWeight.w500),
                   ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

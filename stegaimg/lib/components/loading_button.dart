@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stegaimg/utilities/configs.dart';
 
-class ButtonLogoWithLoadingAndError extends StatelessWidget {
+/// Stega Custom Icon
+///
+/// Loading And Error Icons for IconButton
+///
+/// @category Components
+class StegaCustomIcon extends StatelessWidget {
   final LoadingState? loadingState;
   final IconData pendingIcon;
 
-  const ButtonLogoWithLoadingAndError(this.loadingState, this.pendingIcon);
+  const StegaCustomIcon(this.loadingState, this.pendingIcon);
 
   @override
   Widget build(BuildContext context) {

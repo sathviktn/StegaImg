@@ -5,6 +5,11 @@ import 'package:stegaimg/models/decode_model.dart';
 import 'package:stegaimg/services/decode_service.dart';
 import 'package:stegaimg/utilities/configs.dart';
 
+/// Decode Result
+///
+/// Result Screen for Decode operation.
+///
+/// @category Screens
 class DecodeResult extends StatefulWidget {
   const DecodeResult({Key? key}) : super(key: key);
 
@@ -35,7 +40,7 @@ class _DecodeResultState extends State<DecodeResult> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Result"),
-          titleTextStyle: const StegaTextStyle(fSize: 33, fWeight: FontWeight.w500),
+          titleTextStyle: const StegaImgTextStyle(fSize: 33, fWeight: FontWeight.w500),
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
           leading: IconButton(
@@ -60,13 +65,13 @@ class _DecodeResultState extends State<DecodeResult> {
                             children: [
                               const SizedBox(height: 20.0,),
                               const Text("Decoded Message: ",
-                                  style: StegaTextStyle(fSize: 30)),
+                                  style: StegaImgTextStyle(fSize: 30)),
                               const Divider(color: Colors.redAccent, indent: 20, endIndent: 20,
                                 height: 20, thickness: 5,),
                               const SizedBox(height: 20.0,),
                               GestureDetector(
                                 child: Text(snapshot.data!,
-                                    style: const StegaTextStyle(fSize: 27),),
+                                    style: const StegaImgTextStyle(fSize: 27),),
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(text: snapshot.data))
                                       .then((_) {
@@ -91,11 +96,11 @@ class _DecodeResultState extends State<DecodeResult> {
                               color: Colors.redAccent, size: 150,),
                             const SizedBox(height: 10.0,),
                             const Text('Oops >_<',
-                                style: StegaTextStyle(fSize: 35, fColor: Colors.redAccent)),
+                                style: StegaImgTextStyle(fSize: 35, fColor: Colors.redAccent)),
                             const SizedBox(height: 10.0,),
                             // To get complete error, print this => ${snapshot.error}
                             const Text('Something went wrong! Please retry with valid inputs.',
-                                  style: StegaTextStyle(fSize: 30),),
+                                  style: StegaImgTextStyle(fSize: 30),),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(20.0),
                               child: Image.asset('assets/gifs/error.gif'),
@@ -118,7 +123,7 @@ class _DecodeResultState extends State<DecodeResult> {
                             ),
                             const Text(
                                 'Please wait while StegaImg is decoding your message...',
-                                style: StegaTextStyle(fSize: 25, fWeight: FontWeight.w500)
+                                style: StegaImgTextStyle(fSize: 25, fWeight: FontWeight.w500)
                             )
                           ],
                         )

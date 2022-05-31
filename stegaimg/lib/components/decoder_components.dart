@@ -2,11 +2,24 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:stegaimg/utilities/configs.dart';
 
+/// Extract Last Bit
+///
+/// @category Components: Decode
 int extractLastBit(int pixel) {
   int lastBit = pixel & 1;
   return lastBit;
 }
 
+/// Bytes2Msg
+///
+/// @category Utilities
+String bytesToMsg(Uint16List bytes) {
+  return String.fromCharCodes(bytes);
+}
+
+/// Assemble Bits
+///
+/// @category Components: Decode
 int assembleBits(Uint16List byte) {
   if (byte.length != dataLength) {
     throw FlutterError('byte_incorrect_size');
@@ -22,7 +35,10 @@ int assembleBits(Uint16List byte) {
   return assembled;
 }
 
-Uint16List bits2bytes(Uint16List bits) {
+/// Bits To Bytes
+///
+/// @category Components: Decode
+Uint16List bitsToBytes(Uint16List bits) {
   if ((bits.length % dataLength) != 0) {
     throw FlutterError('bits_contain_incomplete_byte');
   }
@@ -37,6 +53,9 @@ Uint16List bits2bytes(Uint16List bits) {
   return byteMsg;
 }
 
+/// Extract Bits From Image
+///
+/// @category Components: Decode
 Uint16List extractBitsFromImg(Uint16List img) {
   Uint16List extracted = Uint16List(img.length);
   for (int i = 0; i < img.length; i++) {
@@ -45,16 +64,21 @@ Uint16List extractBitsFromImg(Uint16List img) {
   return extracted;
 }
 
+/// Sanitize Padding Zeros
+///
+/// @category Components: Decode
 Uint16List sanitizePaddingZeros(Uint16List msg) {
   int lastNonZeroIdx = msg.length - 1;
   while (msg[lastNonZeroIdx] == 0) {
     --lastNonZeroIdx;
   }
-  Uint16List sanitized =
-  Uint16List.fromList(msg.getRange(0, lastNonZeroIdx + 1).toList());
+  Uint16List sanitized = Uint16List.fromList(msg.getRange(0, lastNonZeroIdx + 1).toList());
   return sanitized;
 }
 
+/// Pad To Bytes
+///
+/// @category Components: Decode
 Uint16List padToBytes(Uint16List msg) {
   int padSize = dataLength - msg.length % dataLength;
   Uint16List padded = Uint16List(msg.length + padSize);
