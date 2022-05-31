@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stegaimg/utilities/configs.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -7,14 +8,9 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          titleTextStyle: const TextStyle(
-              fontSize: 33,
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontFamily: 'JosefinSans'
-          ),
-          backgroundColor: Colors.blueGrey,
           title: const Text('StegaImg'),
+          titleTextStyle: const StegaTextStyle(fSize: 33, fWeight: FontWeight.w500),
+          backgroundColor: Colors.blueGrey,
           centerTitle: true,
         ),
         backgroundColor: Colors.black,
@@ -23,40 +19,32 @@ class Home extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  const Center(
-                      child: Text(
-                        'Welcome to StegaImg',
-                        style: TextStyle(
-                            fontSize: 33,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'JosefinSans'
-                        ),
-                      )
+                  const Text(
+                    'Welcome to StegaImg',
+                    style: StegaTextStyle(fSize: 35, fWeight: FontWeight.w500),
                   ),
-                  Center(
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: (){
-                                Navigator.pushNamed(context, '/encodeImg');
-                              },
-                              icon: const Icon(Icons.lock_rounded),
-                              iconSize: 50,
-                              color: Colors.white,
-                            ),
-                            IconButton(
-                              onPressed: (){
-                                Navigator.pushNamed(context, '/decodeImg');
-                              },
-                              icon: const Icon(Icons.lock_open_rounded),
-                              iconSize: 50,
-                              color: Colors.white,
-                            )
-                          ])
-                  )]
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: (){
+                            Navigator.pushNamed(context, '/encodeImg');
+                            },
+                          icon: const Icon(Icons.lock_rounded),
+                          iconSize: 80,
+                          color: Colors.white,
+                        ),
+                        IconButton(
+                          onPressed: (){
+                            Navigator.pushNamed(context, '/decodeImg');
+                            },
+                          icon: const Icon(Icons.lock_open_rounded),
+                          iconSize: 80,
+                          color: Colors.white,
+                        )
+                      ])
+                  ]
             )
         )
     );

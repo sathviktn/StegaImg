@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stegaimg/utilities/configs.dart';
 
 class PasswordField extends StatefulWidget {
   final TextEditingController? ctrl;
@@ -27,46 +28,27 @@ class _PasswordField extends State<PasswordField> {
     if (widget.enable!) {
       return Column(
         children: <Widget>[
-          // Row(
-            //children: <Widget>[
-              Theme(data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
-                  child: CheckboxListTile(
-                      title: const Text("Show password",
-                          style: TextStyle(
-                            fontSize: 23,
-                            color: Colors.white,
-                            fontStyle: FontStyle.italic,
-                            fontFamily: 'JosefinSans',
-                          )),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      value: visible,
-                      activeColor: Colors.white,
-                      checkColor: Colors.black,
-                      onChanged: (bool? nextVal) {
-                        setState(() {
-                          visible = nextVal;
-                        });
-                      })
-              ),
-          //  ],
-          //),
+          Theme(data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
+              child: CheckboxListTile(
+                  title: const Text("Show password",
+                      style: StegaTextStyle(fSize: 25, fStyle: FontStyle.italic)),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  value: visible,
+                  activeColor: Colors.white,
+                  checkColor: Colors.black,
+                  onChanged: (bool? nextVal) {
+                    setState(() {
+                      visible = nextVal;
+                    });
+                  })
+          ),
           TextField(
             key: Key(widget.keyVal!),
             controller: widget.ctrl,
             obscureText: !visible!,
-            decoration: const InputDecoration(
-                hintText: 'Enter the Password',
-                hintStyle: TextStyle(
-                    fontSize: 27,
-                    fontFamily: 'JosefinSans',
-                    color: Colors.white
-                )
-            ),
+            decoration: StegaInputDec(hint: 'Enter the password', hFontSize: 30),
             textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontSize: 27,
-                color: Colors.white
-            ),
+            style: const StegaTextStyle(fSize: 30)
           ),
         ],
       );

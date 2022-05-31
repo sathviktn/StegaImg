@@ -61,7 +61,7 @@ EncodeResponse encodeMessageIntoImage(EncodeRequest? req)  {
   // encoded Uint8List data
   Uint8List data = Uint8List.fromList(img_lib.encodePng(editableImage));
 
-  EncodeResponse response = EncodeResponse(editableImage, displayImage, data);
+  EncodeResponse response = EncodeResponse(editableImage, displayImage, data, req.imgName);
   return response;
 }
 

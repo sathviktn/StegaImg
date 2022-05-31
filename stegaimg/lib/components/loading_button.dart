@@ -10,7 +10,7 @@ class ButtonLogoWithLoadingAndError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (loadingState) {
-      case LoadingState.LOADING:
+      case LoadingState.loading:
         return const SizedBox(
           height: 20.0,
           width: 20.0,
@@ -19,11 +19,11 @@ class ButtonLogoWithLoadingAndError extends StatelessWidget {
             strokeWidth: 2.0,
           ),
         );
-      case LoadingState.ERROR:
+      case LoadingState.error:
         return const Icon(Icons.close,);
-      case LoadingState.PENDING:
+      case LoadingState.pending:
         return Icon(pendingIcon);
-      case LoadingState.SUCCESS:
+      case LoadingState.success:
         return const Icon(Icons.done);
       default:
         return Icon(pendingIcon);

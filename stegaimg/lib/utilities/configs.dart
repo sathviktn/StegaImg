@@ -36,10 +36,10 @@ enum ResultState {
 ///
 /// {@category Services: States}
 enum LoadingState {
-  LOADING,
-  ERROR,
-  PENDING,
-  SUCCESS,
+  loading,
+  error,
+  pending,
+  success,
 }
 
 
@@ -103,28 +103,34 @@ String padCryptionKey(String key) {
   return paddedKey;
 }
 
+/// Custom TextStyle for StegaImg
 class StegaTextStyle extends TextStyle {
   final String fFamily;
   final double fSize;
   final Color fColor;
   final FontWeight fWeight;
   final FontStyle fStyle;
+  final double lSpacing;
 
   const StegaTextStyle({
     this.fFamily = 'JosefinSans',
     this.fSize = 20,
     this.fColor = Colors.white,
     this.fWeight = FontWeight.w500,
-    this.fStyle = FontStyle.normal
+    this.fStyle = FontStyle.normal,
+    this.lSpacing = 1.0
+
   }) : super(
     color: fColor,
     fontWeight: fWeight,
     fontSize: fSize,
     fontStyle: fStyle,
     fontFamily: fFamily,
+    letterSpacing: lSpacing
   );
 }
 
+/// Custom InputDecoration for StegaImg
 class StegaInputDec extends InputDecoration{
   final String hint;
   final double hFontSize;

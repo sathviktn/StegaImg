@@ -11,19 +11,21 @@ class EncodeResponse {
   img_lib.Image editableImage;   // not needed
   Image displayImage;  // for displaying output image
   Uint8List data;
+  String imgName;
 
-  EncodeResponse(this.editableImage, this.displayImage, this.data);
+  EncodeResponse(this.editableImage, this.displayImage, this.data, this.imgName);
 }
 
 /// Encode Request
 ///
 /// {@category Models}
 class EncodeRequest {
+  String imgName;
   img_lib.Image originalImg;
   String secretMsg;
   String? password;
 
-  EncodeRequest(this.originalImg, this.secretMsg, {this.password});
+  EncodeRequest(this.imgName, this.originalImg, this.secretMsg, {this.password});
 
   bool shouldEncrypt() {
     return (password != null && password != ''); // true if password != null and != '', else, false
@@ -37,8 +39,9 @@ class EncodeResultScreenRenderRequest{
   Image encodedImage;
   Uint8List encodedByteImage;
   ResultState state;
+  String imgName;
 
-  EncodeResultScreenRenderRequest(this.state, this.encodedByteImage, this.encodedImage);
+  EncodeResultScreenRenderRequest(this.state, this.encodedByteImage, this.encodedImage, this.imgName);
 }
 
 /// Uploaded Image Conversion Request

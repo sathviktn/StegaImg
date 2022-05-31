@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:stegaimg/models/decode_model.dart';
 import 'package:stegaimg/services/decode_service.dart';
 import 'package:stegaimg/utilities/configs.dart';
@@ -33,101 +34,98 @@ class _DecodeResultState extends State<DecodeResult> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Decoded Successfully !"),
+          title: const Text("Result"),
+          titleTextStyle: const StegaTextStyle(fSize: 33, fWeight: FontWeight.w500),
+          centerTitle: true,
+          backgroundColor: Colors.blueGrey,
           leading: IconButton(
               key: const Key('decoded_screen_back_btn'),
               icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               }),
-          centerTitle: true,
         ),
         backgroundColor: Colors.black,
         resizeToAvoidBottomInset: false,
         body: FutureBuilder<String>(
-              future: decodedMsg,
-              builder: (BuildContext context,
-                  AsyncSnapshot<String> snapshot) {
-                if (snapshot.hasData) {
-                  return Container(
-                      padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                      child: ListView(
-                          children: <Widget>[
-                            const SizedBox(
-                              height: 30.0,
+            future: decodedMsg,
+            builder: (BuildContext context,
+                AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData) {
+                return Center(
+                    child: SingleChildScrollView(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 20.0,),
+                              const Text("Decoded Message: ",
+                                  style: StegaTextStyle(fSize: 30)),
+                              const Divider(color: Colors.redAccent, indent: 20, endIndent: 20,
+                                height: 20, thickness: 5,),
+                              const SizedBox(height: 20.0,),
+                              GestureDetector(
+                                child: Text(snapshot.data!,
+                                    style: const StegaTextStyle(fSize: 27),),
+                                onTap: () {
+                                  Clipboard.setData(ClipboardData(text: snapshot.data))
+                                      .then((_) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            getSnackBar(Icons.done_rounded, Colors.green,
+                                                "Text Copied !"));
+                                  });
+                                }),
+                            ]
+                        )
+                    )
+                );
+              }
+              else if (snapshot.hasError) {
+                return Center(
+                    child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.error_outline_rounded,
+                              color: Colors.redAccent, size: 150,),
+                            const SizedBox(height: 10.0,),
+                            const Text('Oops >_<',
+                                style: StegaTextStyle(fSize: 35, fColor: Colors.redAccent)),
+                            const SizedBox(height: 10.0,),
+                            // To get complete error, print this => ${snapshot.error}
+                            const Text('Something went wrong! Please retry with valid inputs.',
+                                  style: StegaTextStyle(fSize: 30),),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.asset('assets/gifs/error.gif'),
                             ),
-                            const Text("Decoded Message: ",
-                                style: TextStyle(
-                              fontFamily: 'JosefinSans',
-                              color: Colors.white,
-                              fontSize: 25,
+                          ],
+                        )
+                    )
+                );
+              }
+              else {
+                return Center(
+                    child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.asset('assets/gifs/loading.gif'),
+                            ),
+                            const Text(
+                                'Please wait while StegaImg is decoding your message...',
+                                style: StegaTextStyle(fSize: 25, fWeight: FontWeight.w500)
                             )
-                            ),
-                            const SizedBox(
-                              height: 40.0,
-                            ),
-                            Center(
-                              child: Text(
-                                snapshot.data!,
-                                style: const TextStyle(
-                                  fontFamily: 'JosefinSans',
-                                  color: Colors.white,
-                                  fontSize: 27,
-                                ),
-                              ),
-                            ),
-                          ]
-                      )
-                  );
-                } else if (snapshot.hasError) {
-                  return Container(
-                    padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                    child: ListView(
-                      children: <Widget>[
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        const Center(
-                            child: Text('Whoops >_<',
-                              style: TextStyle(fontSize: 30.0),
-                            )),
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        Center(
-                            child: Text('It seems something went wrong: ${snapshot.error}')),
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset('assets/gifs/error.gif'),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return ListView(
-                    children: <Widget>[
-                      Container(
-                          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 0.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image.asset('assets/gifs/loading.gif'),
-                          )),
-                      const Text(
-                          'Please be patient, stegaimg is decoding your message...',
-                          style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              fontFamily: 'JosefinSans'
-                          )
-                      )
-                    ],
-                  );
-                }
-              }),
+                          ],
+                        )
+                    )
+                );
+              }
+            })
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:image/image.dart' as img_lib;
 import 'package:stegaimg/models/decode_model.dart';
 import 'package:stegaimg/utilities/configs.dart';
 
+import '../components/loading_button.dart';
 import '../components/password_field.dart';
 
 class DecodeImg extends StatefulWidget {
@@ -19,6 +20,7 @@ class _DecodeImgState extends State<DecodeImg> {
 
   img_lib.Image? editableImage;
   File? decodingImg;
+  late LoadingState getState;
   TextEditingController? password;
   bool? decrypt;
 
@@ -27,20 +29,28 @@ class _DecodeImgState extends State<DecodeImg> {
     super.initState();
     password = TextEditingController();
     decrypt = false;
+    getState = LoadingState.pending;
   }
 
   Future getImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      getState = LoadingState.loading;
+
       if (image == null) {
-        editableImage = null;
-        return;
+        setState((){
+          editableImage = null;
+          getState = LoadingState.pending;
+        });
       }
-      final tempImg = File(image.path);
-      setState(() {
-        decodingImg = tempImg;
-        editableImage = img_lib.decodeImage(decodingImg!.readAsBytesSync());
-      });
+      else {
+        final tempImg = File(image.path);
+        setState(() {
+          decodingImg = tempImg;
+          editableImage = img_lib.decodeImage(decodingImg!.readAsBytesSync());
+          getState = LoadingState.success;
+        });
+      }
     }
 
     on PlatformException catch(e){
@@ -67,14 +77,15 @@ class _DecodeImgState extends State<DecodeImg> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Decode'),
-        titleTextStyle: const TextStyle(
-            fontSize: 33,
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-            fontFamily: 'JosefinSans'
-        ),
+        titleTextStyle: const StegaTextStyle(fSize: 33, fWeight: FontWeight.w500),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
+        leading: IconButton(
+            key: const Key('encoded_result_screen_back_btn'),
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
       ),
       backgroundColor: Colors.black,
       body: Center(
@@ -83,65 +94,43 @@ class _DecodeImgState extends State<DecodeImg> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Image Picker
-              Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        const Text(
-                          'Pick an Image',
-                          style: TextStyle(
-                            fontFamily: 'JosefinSans',
-                            color: Colors.white,
-                            fontSize: 27,
-                          ),
-                        ),
-                        decodingImg == null? IconButton(
-                          onPressed: () => getImage(),
-                          icon: const Icon(Icons.image_search),
-                          iconSize: 50,
-                          color: Colors.white,
-                        )
-                            : Image.file(
-                            decodingImg!,
-                            width: 300,
-                            height: 230,
-                            fit: BoxFit.fill
-                        )
-                      ]
+              const SizedBox(height: 25,),
+              // Image Picker - Start
+              const Text('Pick an Image', style: StegaTextStyle(fSize: 30),),
+              IconButton(
+                icon: ButtonLogoWithLoadingAndError(getState, Icons.image_search),
+                iconSize: 50,
+                color: Colors.white,
+                onPressed: () => getImage(),),
+              decodingImg == null ? Image.asset("assets/gifs/noImg.gif",
+                width: 300, height: 180, fit: BoxFit.fitWidth,) :
+              Image.file(decodingImg!, width: 300, height: 230, fit: BoxFit.fill),
+              // Image Picker - End
+              const SizedBox(height: 25),
+              // Password - Start
+              Theme(data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
+                  child: CheckboxListTile(
+                    title: const Text("Decrypt my message",
+                        style: StegaTextStyle(fSize: 25, fStyle: FontStyle.italic)),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    key: const Key('decode_screen_token_checkbox'),
+                    value: decrypt,
+                    activeColor: Colors.white,
+                    checkColor: Colors.black,
+                    onChanged: (bool? nextVal) {
+                      setState(() {
+                        decrypt = nextVal;
+                      });},
                   )
               ),
-              const SizedBox(height: 30),
-              // Password
-                  Theme(data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
-                      child: CheckboxListTile(
-                        title: const Text("Decrypt my message",
-                            style: TextStyle(
-                              fontSize: 23,
-                              color: Colors.white,
-                              fontStyle: FontStyle.italic,
-                              fontFamily: 'JosefinSans',
-                            )),
-                        controlAffinity: ListTileControlAffinity.leading,
-                        key: const Key('decode_screen_token_checkbox'),
-                        value: decrypt,
-                        activeColor: Colors.white,
-                        checkColor: Colors.black,
-                        onChanged: (bool? nextVal) {
-                          setState(() {
-                            decrypt = nextVal;
-                          });
-                        },
-                      )
-                  ),
-              // Password Field
               PasswordField(
                 decrypt,
                 password,
                 keyVal: 'encode_screen_token_input',
               ),
-              const SizedBox(height: 30),
+              // Password - End
+              const SizedBox(height: 25),
+              // Decode Button - Start
               Center(
                 child: IconButton(
                   icon: const Icon(Icons.navigate_next),
@@ -149,6 +138,7 @@ class _DecodeImgState extends State<DecodeImg> {
                   iconSize: 50,
                   color: Colors.white,
                 ),
+                // Decode Button - End
               )
             ],),
         )

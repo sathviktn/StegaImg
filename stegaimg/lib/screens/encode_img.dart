@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 import 'package:image/image.dart' as img_lib;
+import 'package:stegaimg/components/loading_button.dart';
 import 'package:stegaimg/models/encode_model.dart';
 import 'package:stegaimg/utilities/configs.dart';
 import 'package:stegaimg/components/password_field.dart';
@@ -20,7 +22,9 @@ class _EncodeImgState extends State<EncodeImg> {
 
   File? encodingImg;
   img_lib.Image? editableImage;
+  String? imgName;
   bool? encrypt;
+  late LoadingState getState;
   TextEditingController? secretMsg;
   TextEditingController? password;
   late bool pickedImg;
@@ -31,9 +35,12 @@ class _EncodeImgState extends State<EncodeImg> {
   Future getImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      getState = LoadingState.loading;
+
       if (image == null) {
         editableImage = null;
         pickedImg = false;
+        getState = LoadingState.pending;
       }
       else {
         final tempImg = File(image.path);
@@ -44,7 +51,9 @@ class _EncodeImgState extends State<EncodeImg> {
           encodingImg = tempImg;
           editableImage = res.editableImage; // img_lib.decodeImage(encodingImg!.readAsBytesSync());
           imageByteSize = res.imageByteSize;
+          imgName = path.basename(image.path);
           pickedImg = true;
+          getState = LoadingState.success;
           capacityUsageStats = 0.0;
           capacityUsage = 'Usage: $capacityUsageStats%';
         });
@@ -53,7 +62,8 @@ class _EncodeImgState extends State<EncodeImg> {
 
     on Exception catch(e){
       ScaffoldMessenger.of(context).showSnackBar(
-          getSnackBar(Icons.error_outline_rounded, Colors.redAccent, "Failed to pick image: $e"));
+          getSnackBar(Icons.error_outline_rounded, Colors.redAccent,
+              "Failed to pick image: $e"));
       return;
     }
   }
@@ -61,7 +71,7 @@ class _EncodeImgState extends State<EncodeImg> {
   Future<void> sendToEncode() async {
       final secret = secretMsg?.text;
       if (editableImage != null && secret != "") {
-        EncodeRequest req = EncodeRequest(editableImage!, secret!,
+        EncodeRequest req = EncodeRequest(imgName!, editableImage!, secret!,
             password: password!.text);
         Navigator.pushNamed(context, '/encodeResult', arguments: req);
       }
@@ -97,10 +107,12 @@ class _EncodeImgState extends State<EncodeImg> {
   @override
   void initState() {
     super.initState();
+    imgName = "Image";
     secretMsg = TextEditingController();
     password = TextEditingController();
     encrypt = false;
     pickedImg = false;
+    getState = LoadingState.pending;
     capacityUsage = 'Not applicable, no image uploaded';
     capacityUsageStats = 0.0;
     imageByteSize = 0;
@@ -111,14 +123,15 @@ class _EncodeImgState extends State<EncodeImg> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Encode'),
-        titleTextStyle: const TextStyle(
-            fontSize: 33,
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-            fontFamily: 'JosefinSans'
-        ),
+        titleTextStyle: const StegaTextStyle(fSize: 33, fWeight: FontWeight.w500),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
+        leading: IconButton(
+            key: const Key('encoded_result_screen_back_btn'),
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
       ),
       backgroundColor: Colors.black,
       body: Center(
@@ -127,29 +140,26 @@ class _EncodeImgState extends State<EncodeImg> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    const SizedBox(height: 15,),
                     // Image Picker - Start
-                    const Text('Pick an Image', style: StegaTextStyle(fSize: 27),),
-                    const SizedBox(height: 20,),
-                    !pickedImg? IconButton(     //encodingImg == null
-                      onPressed: () => getImage(),
-                      icon: const Icon(Icons.image_search),
+                    const Text('Pick an Image', style: StegaTextStyle(fSize: 30),),
+                    IconButton(
+                      icon: ButtonLogoWithLoadingAndError(getState, Icons.image_search),
                       iconSize: 50,
                       color: Colors.white,
-                    ) : Image.file(
-                        encodingImg!,
-                        width: 300,
-                        height: 230,
-                        fit: BoxFit.fill
-                    ),
+                      onPressed: () => getImage(),),
+                    !pickedImg ? Image.asset("assets/gifs/noImg.gif",
+                      width: 300, height: 180, fit: BoxFit.fitWidth,) :
+                    Image.file(encodingImg!, width: 300, height: 230, fit: BoxFit.fill),
                     // Image Picker - End
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 15,),
                     // Usage Stats - Start
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(capacityUsage,
-                            style: const StegaTextStyle(fSize: 20)),
+                            style: const StegaTextStyle(fSize: 18)),
                           CircularProgressIndicator(
                             value: capacityUsageStats,
                             color: Colors.red,
@@ -157,33 +167,28 @@ class _EncodeImgState extends State<EncodeImg> {
                           )
                         ]),
                     // Usage Stats - End
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 15,),
                     // Secret Message - Start
                     TextField(
                       key: const Key('encode_screen_msg_input'),
                       controller: secretMsg,
                       onChanged: onMessageChange,
                       obscureText: false,
-                      decoration: StegaInputDec(
-                          hint: 'Enter the Secret Message',
-                          hFontSize: 27
-                      ),
+                      decoration: StegaInputDec(hint: 'Enter the secret message', hFontSize: 30),
                       textAlign: TextAlign.center,
-                      style: const StegaTextStyle(fSize: 27),
+                      style: const StegaTextStyle(fSize: 30),
                       minLines: 1,
                       maxLines: 3,
                     ),
                     // Secret Message - End
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
                     // Password - Start
                     Theme(
-                        data: Theme.of(context).copyWith(
-                            unselectedWidgetColor: Colors.white
-                        ),
+                        data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
                         child: CheckboxListTile(
                           title: const Text("Encrypt my message",
                               style: StegaTextStyle(
-                                  fSize: 23,
+                                  fSize: 25,
                                   fStyle:FontStyle.italic
                               )
                           ),
@@ -205,7 +210,7 @@ class _EncodeImgState extends State<EncodeImg> {
                       keyVal: 'encode_screen_token_input',
                     ),
                     // Password - End
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
                     // Encode Button - Start
                     IconButton(
                       icon: const Icon(Icons.navigate_next),
