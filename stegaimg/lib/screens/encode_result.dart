@@ -210,7 +210,7 @@ class _ResultState extends State<EncodeResult> {
                                 child: Image.asset('assets/gifs/loading.gif'),
                               ),
                               const Text(
-                                  'Please wait while StegaImg is decoding your message...',
+                                  'Please wait while StegaImg is encoding your message...',
                                   style: StegaImgTextStyle(fSize: 25, fWeight: FontWeight.w500)
                               )
                             ],
