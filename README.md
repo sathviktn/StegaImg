@@ -12,7 +12,13 @@ Go to my [Releases page](https://github.com/SathvikTn/StegaImg/releases) and dow
 
 ### Usage
 
+#### 1. Encode
 
+https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4
+
+#### 2. Decode
+
+https://user-images.githubusercontent.com/43294216/176707775-0964a4b8-be21-4685-9e5e-7daa8ad9c131.mp4
 
 ## IOS
 
@@ -44,15 +50,15 @@ Step 7: Try to re-run the app again from Xcode and Done.
 
 ### Usage
 
-1. Permissions
+#### 1. Permissions
 
 https://user-images.githubusercontent.com/43294216/176703937-f03b576d-03f7-4856-a603-8985ccf3325f.mp4
 
-2. Encode
+#### 2. Encode
 
 https://user-images.githubusercontent.com/43294216/176704125-52b69830-720c-4098-aa60-059e81a02ef2.mp4
 
-3. Decode
+#### 3. Decode
 
 https://user-images.githubusercontent.com/43294216/176704260-d14b4cf6-a775-4924-b1e6-dad63b52bdfb.mp4
 
