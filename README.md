@@ -44,6 +44,14 @@ Step 7: Try to re-run the app again from Xcode and Done.
 
 ### Usage
 
+1. Permissions
+
+
+2. Encode
+
+
+3. Decode
+
 
 
 ## Reference
