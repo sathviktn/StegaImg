@@ -4,6 +4,19 @@ Image Steganography built using Flutter and Dart.
 
 Support for Android and IOS only for now. Tested on Android & IOS.
 
+## Table of Contents
+
+- [Android](#android)
+  - [Installation](#installation)
+  - [Usage](#usage)
+
+
+- [IOS](#ios)
+  - [Installation](#installation-1)
+  - [Usage](#usage-1)
+
+- [References](#references)
+
 ## Android
 
 ### Installation
@@ -62,7 +75,7 @@ https://user-images.githubusercontent.com/43294216/176704125-52b69830-720c-4098-
 
 https://user-images.githubusercontent.com/43294216/176704260-d14b4cf6-a775-4924-b1e6-dad63b52bdfb.mp4
 
-## Reference
+## References
 
 - [Photochat](https://github.com/tianhaoz95/photochat)
 
