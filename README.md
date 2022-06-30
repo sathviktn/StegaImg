@@ -2,14 +2,15 @@
 
 Image Steganography built using Flutter and Dart.
 
-Support for Android and IOS only for now. Tested on Android & IOS.
+Tested and Support for Android and IOS only for now. 
+
+Website is at [here](https://sathviktn.github.io/StegaImg/).
 
 ## Table of Contents
 
 - [Android](#android)
   - [Installation](#installation)
   - [Usage](#usage)
-
 
 - [IOS](#ios)
   - [Installation](#installation-1)
