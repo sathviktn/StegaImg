@@ -46,13 +46,15 @@ Step 7: Try to re-run the app again from Xcode and Done.
 
 1. Permissions
 
+https://user-images.githubusercontent.com/43294216/176703937-f03b576d-03f7-4856-a603-8985ccf3325f.mp4
 
 2. Encode
 
+https://user-images.githubusercontent.com/43294216/176704125-52b69830-720c-4098-aa60-059e81a02ef2.mp4
 
 3. Decode
 
-
+https://user-images.githubusercontent.com/43294216/176704260-d14b4cf6-a775-4924-b1e6-dad63b52bdfb.mp4
 
 ## Reference
 
