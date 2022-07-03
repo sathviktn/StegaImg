@@ -20,42 +20,60 @@ class StegaImgPasswordField extends StatefulWidget {
 }
 
 class _StegaImgPasswordField extends State<StegaImgPasswordField> {
-  bool? visible;
+  bool? visibleSecret;
 
   @override
   void initState() {
     super.initState();
-    visible = false;
+    visibleSecret = false;
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.enable!) {
-      return Column(
+      return Row(
+        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Theme(data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
-              child: CheckboxListTile(
-                  title: const Text("Show password",
-                      style: StegaImgTextStyle(fSize: 25, fStyle: FontStyle.italic)),
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: visible,
-                  activeColor: Colors.white,
-                  checkColor: Colors.black,
-                  onChanged: (bool? nextVal) {
-                    setState(() {
-                      visible = nextVal;
-                    });
-                  })
+          Expanded(
+              child: TextField(
+                key: Key(widget.keyVal!),
+                controller: widget.ctrl,
+                obscureText: !visibleSecret!,
+                textAlign: TextAlign.center,
+                style: const StegaImgTextStyle(fSize: 30),
+                decoration: InputDecoration(
+                    hintText: 'Enter the password',
+                    hintStyle: const StegaImgTextStyle(fSize: 30, fColor: Colors.lightBlueAccent),
+                    suffixIcon: Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.blueGrey,
+                            borderRadius: BorderRadius.all(Radius.circular(30))
+                        ),
+                        child: IconButton(
+                          icon: visibleSecret!
+                          ? const Icon(Icons.visibility)
+                              : const Icon(Icons.visibility_off),
+                          color: Colors.black,
+                          onPressed: () => {
+                            setState(() { visibleSecret = !visibleSecret!; })
+                            },
+                        )
+                    )),
+              )
           ),
-          TextField(
-            key: Key(widget.keyVal!),
-            controller: widget.ctrl,
-            obscureText: !visible!,
-            decoration: StegaImgInputDec(hint: 'Enter the password', hFontSize: 30),
-            textAlign: TextAlign.center,
-            style: const StegaImgTextStyle(fSize: 30)
-          ),
-        ],
+          Container(
+            decoration: const BoxDecoration(
+                color: Colors.redAccent,
+                borderRadius: BorderRadius.all(Radius.circular(30))
+            ),
+            child: IconButton(
+                icon: const Icon(Icons.clear, color: Colors.black,),
+                onPressed: (){
+                  widget.ctrl?.clear();
+                }),
+          )
+        ]
       );
     } else {
       return Container();

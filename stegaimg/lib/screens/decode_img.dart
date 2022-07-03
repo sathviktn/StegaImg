@@ -100,7 +100,7 @@ class _DecodeImgState extends State<DecodeImg> {
             children: [
               const SizedBox(height: 25,),
               // Image Picker - Start
-              const Text('Pick an Image', style: StegaImgTextStyle(fSize: 30),),
+              const Text('Pick an Image', style: StegaImgTextStyle(fSize: 30, fColor: Colors.lightBlueAccent),),
               IconButton(
                 icon: StegaCustomIcon(getState, Icons.image_search),
                 iconSize: 50,
@@ -115,11 +115,11 @@ class _DecodeImgState extends State<DecodeImg> {
               Theme(data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
                   child: CheckboxListTile(
                     title: const Text("Decrypt my message",
-                        style: StegaImgTextStyle(fSize: 25, fStyle: FontStyle.italic)),
+                        style: StegaImgTextStyle(fSize: 25, fStyle: FontStyle.italic, fColor: Colors.greenAccent)),
                     controlAffinity: ListTileControlAffinity.leading,
                     key: const Key('decode_screen_token_checkbox'),
                     value: decrypt,
-                    activeColor: Colors.white,
+                    activeColor: Colors.greenAccent,
                     checkColor: Colors.black,
                     onChanged: (bool? nextVal) {
                       setState(() {
@@ -135,12 +135,16 @@ class _DecodeImgState extends State<DecodeImg> {
               // Password - End
               const SizedBox(height: 25),
               // Decode Button - Start
-              Center(
+              Container(
+                decoration: const BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.all(Radius.circular(50))
+                ),
                 child: IconButton(
                   icon: const Icon(Icons.navigate_next),
                   onPressed: sendToDecode,
                   iconSize: 50,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 // Decode Button - End
               )

@@ -89,7 +89,7 @@ class _EncodeImgState extends State<EncodeImg> {
   Future<void> onMessageChange(String msg) async {
     if (!pickedImg || editableImage == null || imageByteSize == 0 || encodingImg == null) {
       setState(() {
-        capacityUsage = 'Not applicable, no image uploaded';
+        capacityUsage = 'No image uploaded';
         capacityUsageStats = 0.0;
       });
     }
@@ -118,7 +118,7 @@ class _EncodeImgState extends State<EncodeImg> {
     encrypt = false;
     pickedImg = false;
     getState = LoadingState.pending;
-    capacityUsage = 'Not applicable, no image uploaded';
+    capacityUsage = 'No image uploaded';
     capacityUsageStats = 0.0;
     imageByteSize = 0;
   }
@@ -139,15 +139,14 @@ class _EncodeImgState extends State<EncodeImg> {
             }),
       ),
       backgroundColor: Colors.black,
-      body: Center(
-          child: SingleChildScrollView(
+      body: SingleChildScrollView(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     const SizedBox(height: 15,),
                     // Image Picker - Start
-                    const Text('Pick an Image', style: StegaImgTextStyle(fSize: 30),),
+                    const Text('Pick an Image', style: StegaImgTextStyle(fSize: 30, fColor: Colors.lightBlueAccent),),
                     IconButton(
                       icon: StegaCustomIcon(getState, Icons.image_search),
                       iconSize: 50,
@@ -179,7 +178,10 @@ class _EncodeImgState extends State<EncodeImg> {
                       controller: secretMsg,
                       onChanged: onMessageChange,
                       obscureText: false,
-                      decoration: StegaImgInputDec(hint: 'Enter the secret message', hFontSize: 30),
+                      decoration: const InputDecoration(
+                        hintText: 'Enter the secret',
+                        hintStyle: StegaImgTextStyle(fSize: 30, fColor: Colors.lightBlueAccent),
+                      ),
                       textAlign: TextAlign.center,
                       style: const StegaImgTextStyle(fSize: 30),
                       minLines: 1,
@@ -190,24 +192,24 @@ class _EncodeImgState extends State<EncodeImg> {
                     // Password - Start
                     Theme(
                         data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white),
-                        child: CheckboxListTile(
-                          title: const Text("Encrypt my message",
-                              style: StegaImgTextStyle(
-                                  fSize: 25,
-                                  fStyle:FontStyle.italic
-                              )
-                          ),
-                          key: const Key('encode_screen_token_checkbox'),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: encrypt,
-                          activeColor: Colors.white,
-                          checkColor: Colors.black,
-                          onChanged: (bool? nextVal) {
-                            setState(() {
-                              encrypt = nextVal;
-                            });
-                          },
-                        )
+                          child: CheckboxListTile(
+                            title: const Text("Encrypt my message",
+                                style: StegaImgTextStyle(
+                                fSize: 25,
+                                fStyle:FontStyle.italic,
+                                fColor: Colors.greenAccent
+                                )),
+                            key: const Key('encode_screen_token_checkbox'),
+                            controlAffinity: ListTileControlAffinity.leading,
+                            value: encrypt,
+                            activeColor: Colors.greenAccent,
+                            checkColor: Colors.black,
+                            onChanged: (bool? nextVal) {
+                              setState(() {
+                                encrypt = nextVal;
+                              });
+                              },
+                          )
                     ),
                     StegaImgPasswordField(
                       encrypt,
@@ -217,17 +219,22 @@ class _EncodeImgState extends State<EncodeImg> {
                     // Password - End
                     const SizedBox(height: 15),
                     // Encode Button - Start
-                    IconButton(
-                      icon: const Icon(Icons.navigate_next),
-                      onPressed: sendToEncode,
-                      iconSize: 50,
-                      color: Colors.white,
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.all(Radius.circular(50))
+                      ),
+                        child: IconButton(
+                          icon: const Icon(Icons.navigate_next),
+                          onPressed: sendToEncode,
+                          iconSize: 50,
+                          color: Colors.black,
+                        )
                     ),
                     // Encode Button - End
                   ]
               )
-          )
-      )
+              )
     );
   }
 }

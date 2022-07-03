@@ -94,21 +94,3 @@ class StegaImgTextStyle extends TextStyle {
     letterSpacing: lSpacing
   );
 }
-
-/// Custom InputDecoration for StegaImg
-///
-/// @category Utilities: InputDecoration
-class StegaImgInputDec extends InputDecoration{
-  final String hint;
-  final double hFontSize;
-
-  StegaImgInputDec({
-    // default values
-    this.hint = "hint",
-    this.hFontSize = 20
-  }) : super(
-    hintText: hint,
-    hintStyle: StegaImgTextStyle(fSize: hFontSize),
-  );
-}
-
