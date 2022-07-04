@@ -28,6 +28,8 @@ Go to my [Releases page](https://github.com/SathvikTn/StegaImg/releases) and dow
 
 #### 1. Encode
 
+<video src="https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4" controls="controls" style="height: 640px; width:320px;"/>
+
 [Android-Encode](https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4)
 
 #### 2. Decode
@@ -83,5 +85,3 @@ Step 7: Try to re-run the app again from Xcode and Done.
 - [IOS Deployment](https://docs.flutter.dev/deployment/ios)
 
 - More about [running app](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) and [schemes](https://help.apple.com/xcode/mac/current/#/dev0bee46f46)
-
-<video src="https://user-images.githubusercontent.com/169707/126715420-991ad821-9ac8-4b66-b79e-e0966e0f3a89.mp4" controls="controls" style="max-width: 730px;"/>
