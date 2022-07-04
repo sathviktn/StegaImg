@@ -28,7 +28,7 @@ Go to my [Releases page](https://github.com/SathvikTn/StegaImg/releases) and dow
 
 #### 1. Encode
 
-<video src="https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4" controls="controls" style="height: 640px; width:320px;"/>
+<video src="https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4" controls="controls" style="height: 640px; width:320px;"> </video>
 
 [Android-Encode](https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4)
 
