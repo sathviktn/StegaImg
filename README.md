@@ -28,11 +28,11 @@ Go to my [Releases page](https://github.com/SathvikTn/StegaImg/releases) and dow
 
 #### 1. Encode
 
-https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4
+https://user-images.githubusercontent.com/43294216/177149812-dc89bf45-1153-4606-a232-8ca8638a536d.mp4
 
 #### 2. Decode
 
-https://user-images.githubusercontent.com/43294216/176707775-0964a4b8-be21-4685-9e5e-7daa8ad9c131.mp4
+https://user-images.githubusercontent.com/43294216/177149884-76e922fb-8589-44a4-b59a-2620d42a1dfd.mp4
 
 ## IOS
 
