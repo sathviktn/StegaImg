@@ -28,13 +28,11 @@ Go to my [Releases page](https://github.com/SathvikTn/StegaImg/releases) and dow
 
 #### 1. Encode
 
-<video src="https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4" controls="controls" style="height: 640px; width:320px;"> </video>
-
-[Android-Encode](https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4)
+<video alt="Android-Encode" src="https://user-images.githubusercontent.com/43294216/176707711-5e22507b-4c98-42f7-b431-5e2cd6b0f198.mp4" controls="controls" style="height: 640px; width:320px;"> </video>
 
 #### 2. Decode
 
-[Android-Decode](https://user-images.githubusercontent.com/43294216/176707775-0964a4b8-be21-4685-9e5e-7daa8ad9c131.mp4)
+<video alt="Android-Decode" src="https://user-images.githubusercontent.com/43294216/176707775-0964a4b8-be21-4685-9e5e-7daa8ad9c131.mp4" controls="controls" style="height: 640px; width:320px;"> </video>
 
 ## IOS
 
@@ -68,15 +66,15 @@ Step 7: Try to re-run the app again from Xcode and Done.
 
 #### 1. Permissions
 
-[IOS-Permissions](https://user-images.githubusercontent.com/43294216/176703937-f03b576d-03f7-4856-a603-8985ccf3325f.mp4)
+<video alt="IOS-Permissions" src="https://user-images.githubusercontent.com/43294216/176703937-f03b576d-03f7-4856-a603-8985ccf3325f.mp4" controls="controls" style="height: 640px; width:320px;"> </video>
 
 #### 2. Encode
 
-[IOS-Encode](https://user-images.githubusercontent.com/43294216/176704125-52b69830-720c-4098-aa60-059e81a02ef2.mp4)
+<video alt="IOS-Encode" src="https://user-images.githubusercontent.com/43294216/176704125-52b69830-720c-4098-aa60-059e81a02ef2.mp4" controls="controls" style="height: 640px; width:320px;"> </video>
 
 #### 3. Decode
 
-[IOS-Decode](https://user-images.githubusercontent.com/43294216/176704260-d14b4cf6-a775-4924-b1e6-dad63b52bdfb.mp4)
+<video alt="IOS-Decode" src="https://user-images.githubusercontent.com/43294216/176704260-d14b4cf6-a775-4924-b1e6-dad63b52bdfb.mp4" controls="controls" style="height: 640px; width:320px;"> </video>
 
 ## References
 
